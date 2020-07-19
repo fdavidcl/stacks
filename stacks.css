@@ -1,0 +1,6 @@
+.delete-item:hover {
+    text-decoration: line-through;
+}
+.is-bold {
+    font-weight: bold;
+}

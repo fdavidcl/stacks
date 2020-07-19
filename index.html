@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>stacks</title>
+    <link rel="stylesheet" href="bulma.min.css">
+    <link rel="stylesheet" href="stacks.css">
+</head>
+
+<body>
+    <div id="app">
+        <nav class="navbar has-background-white-ter">
+            <div class="navbar-brand">
+                <p class="navbar-item" v-if="editMode">
+                    <input class="input" v-model="userName" placeholder="Username">
+                </p>
+                <a class="navbar-item px-5" href="#" v-else>
+                    {{ userName }}'s stacks
+                </a>
+
+                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarMenu">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="navbar-menu" id="navbarMenu">
+                <div class="navbar-start"></div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <div v-if="editMode">
+                                <a class="button" @click="addStack">Add stack</a>
+                                <a class="button is-primary" @click="toggleEdit"><strong>Save</strong></a>
+                            </div>
+                            <div v-else>
+                                <a class="button is-warning" @click="toggleEdit"><strong>Edit</strong></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="columns is-multiline mx-2">
+            <div v-for="(stack, n) in bookmarks" class="column px-4 mt-4 is-one-fifth">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="field has-addons">
+                            <div class="control">
+                                <input class="input has-text-centered is-bold is-static" v-model="stack.title" @change="saveBookmarks">
+                            </div>
+                            <div class="control" v-if="editMode">
+                                <a class="button is-danger" @click="removeStack(n)">✕</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="panel-block" v-if="editMode">
+                        <form action="#" @submit="addLink(n)">
+                            <div class=" field has-addons">
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="Title" v-model="newTitle[n]">
+                                </div>
+                                <div class="control">
+                                    <input class="input" type="text" placeholder="https://example.com"
+                                        v-model="newUrl[n]">
+                                </div>
+                                <div class="control">
+                                    <input class="button is-primary" type="submit" value="+">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div v-if="editMode">
+                        <a class="panel-block delete-item" v-for="(item, i) in stack.links" @click="removeLink(n, i)">
+                            <i class="icon" :style="'background: url(https://' + item.url.split('/')[2] + '/favicon.ico) center center no-repeat; background-size: 16px;'"></i>
+                            {{ item.title }}
+                        </a>
+                    </div>
+                    <div v-else>
+                        <a class="panel-block" v-for="(item, i) in stack.links" v-bind:href="item.url">
+                            <i class="icon" :style="'background: url(https://' + item.url.split('/')[2] + '/favicon.ico) center center no-repeat; background-size: 16px;'"></i>
+                            {{ item.title }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vue.js"></script>
+    <script src="stacks.js"></script>
+</body>
+
+</html>
